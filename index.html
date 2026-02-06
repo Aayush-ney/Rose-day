@@ -15,47 +15,36 @@
     font-family: 'Segoe UI', cursive;
     overflow: hidden;
     text-align: center;
-    transition: transform 0.5s ease;
   }h1 { color: #8b0000; font-size: 3rem; margin-bottom: 5px; animation: glow 2s ease-in-out infinite alternate; } h2 { color: #7a0026; font-size: 1.6rem; margin-bottom: 10px; font-weight: normal; } p { color: #5a001a; font-size: 1.4rem; margin-bottom: 25px; }
 
 .rose { width: 300px; height: 300px; cursor: pointer; }
 
-.petal, .center { transform-origin: 100px 120px; animation: bloom 3s ease-in-out infinite alternate; opacity: 1; filter: drop-shadow(0 0 15px #ff1e4d); }
+.petal { fill: #d1003f; transform-origin: 100px 120px; opacity: 1; filter: drop-shadow(0 0 15px #ff1e4d); } .center { fill: #8b0000; r: 18; filter: drop-shadow(0 0 20px #ff1e4d); }
 
-.petal:nth-child(1) { transform: rotate(0deg); } .petal:nth-child(2) { transform: rotate(45deg); } .petal:nth-child(3) { transform: rotate(-45deg); } .petal:nth-child(4) { transform: rotate(90deg); }
+.floating-heart { position: absolute; bottom: -20px; font-size: 20px; animation: floatUp 6s linear forwards; opacity: 0.8; } #lyrics { margin-top: 20px; color: #5a001a; font-size: 1.2rem; max-width: 90%; line-height: 1.6rem; }
 
-.center { fill: #8b0000; r: 18; filter: drop-shadow(0 0 20px #ff1e4d); }
-
-body.beat { filter: brightness(1.02); } .floating-heart { position: absolute; bottom: -20px; font-size: 20px; animation: floatUp 6s linear forwards; opacity: 0.8; } @keyframes floatUp { from { transform: translateY(0) scale(0.8); opacity: 0.8; } to { transform: translateY(-120vh) scale(1.2); opacity: 0; } }
-
-#lyrics { margin-top: 20px; color: #5a001a; font-size: 1.2rem; max-width: 90%; line-height: 1.6rem; }
-
-@keyframes glow { from { text-shadow: 0 0 5px #ff4d6d; } to { text-shadow: 0 0 20px #ff1e4d; } } @keyframes bloom { from { transform: scale(0.95); } to { transform: scale(1.05); } } </style>
+@keyframes glow { from { text-shadow: 0 0 5px #ff4d6d; } to { text-shadow: 0 0 20px #ff1e4d; } } @keyframes floatUp { from { transform: translateY(0) scale(0.8); opacity: 0.8; } to { transform: translateY(-120vh) scale(1.2); opacity: 0; } } </style>
 
 </head>
-<body>
-<h1>Happy Rose Day 🌹</h1>
-<h2>Susma Karki(Ney naa) </h2>
+<body><h1>Happy Rose Day 🌹</h1>
+<h2>Susma Karki</h2>
 <p>Love you, Sanu ❤️</p><svg class="rose" id="rose" viewBox="0 0 200 200">
   <ellipse class="petal" cx="100" cy="120" rx="30" ry="60" />
   <ellipse class="petal" cx="100" cy="120" rx="30" ry="60" transform="rotate(45 100 120)" />
   <ellipse class="petal" cx="100" cy="120" rx="30" ry="60" transform="rotate(-45 100 120)" />
   <ellipse class="petal" cx="100" cy="120" rx="30" ry="60" transform="rotate(90 100 120)" />
   <circle class="center" cx="100" cy="120" r="18" />
-</svg><audio id="bgm" preload="auto" loop>
+</svg><audio id="bgm" preload="auto">
   <source src="laakhau-hajara.m4a" type="audio/mp4">
 </audio><div id="lyrics"></div><script>
 const rose = document.getElementById('rose');
 const bgm = document.getElementById('bgm');
-const body = document.body;
 const lyricsContainer = document.getElementById('lyrics');
+const petals = document.querySelectorAll('.petal');
+const center = document.querySelector('.center');
 
-// Rose always open and gently blooming
-rose.classList.add('bloom');
+// Play music on tap
 rose.addEventListener('click', () => bgm.play());
-
-// Gentle heartbeat effect
-setInterval(() => { body.style.transform = body.style.transform === 'scale(1.02)' ? 'scale(1)' : 'scale(1.02)'; }, 1200);
 
 // Floating hearts continuously
 setInterval(() => {
@@ -67,57 +56,70 @@ setInterval(() => {
   setTimeout(() => h.remove(), 6000);
 }, 900);
 
-// Lyrics array
+// Time-synced lyrics (approximate timings, adjust for exact sync)
 const lyrics = [
-  "लाखौं हजारौं मध्ये तिम्रो मुस्कानले",
-  "किन हो मलाई पागल बनाउँछ?",
-  "लाखौं प्रयास गर्दा पनि",
-  "किन हो मलाई तिम्रै यादले सताउछ?",
-  "माया के हो भनेर",
-  "तिम्रै वरिपरि रहँदा यो मनले थाहा पाउँछ",
-  "आज भोलि, सुन्दा तिम्रो बोली",
-  "यो मुटु असाध्यै रमाउँछ",
-  "घामलाई हेरी बस्छु, बादलमा नी तिमी देख्छु",
-  "तिमी बिना कसरी बिताउने होला जिन्दगी?",
-  "ढाटेको केही छैन, तिम्रो लागि मेरो माया—",
-  "कति रैछ हेरिदेउन, यो सानो मुटुमा",
-  "चन्द्रमा र तारागण सामु, सारा संसार सामु",
-  "देखाइदिन्छु कति माया गर्छु तिमीलाई",
-  "भन्नेले भन्नेछन्, माया, मात्र तिमी पाए बालै छैन अरू कोहीको",
-  "सातौं जुनी भरि तिम्रै मुहार हेरी",
-  "तिम्रै हात समाई जीवन बिताउला",
-  "भनन मात्र तिमी, माया",
-  "सारा संसार तिम्रै हातमा थमाइदिउला",
-  "बादलहरु हेरी, तिम्रै गीत कोरी",
-  "आँखाहरू बन्द गरी मुस्कुराउँछु म",
-  "हिजो आज, सुन्दा त्यो आवाज",
-  "यो मुटु असाध्यै रमाउँछ",
-  "घामलाई हेरी बस्छु, बादलमा नी तिमी देख्छु",
-  "तिमी बिना कसरी बिताउने होला जिन्दगी?",
-  "ढाटेको केही छैन, तिम्रो लागि मेरो माया—",
-  "कति रैछ हेरिदेउन, यो सानो मुटुमा",
-  "चन्द्रमा र तारागण सामु, सारा संसार सामु",
-  "देखाइदिन्छु कति माया गर्छु तिमीलाई",
-  "भन्नेले भन्नेछन्, माया, मात्र तिमी पाए बालै छैन अरू कोहीको",
-  "लाखौं हजारौं मध्ये तिम्रै मुस्कानले",
-  "किन हो मलाई पागल बनाउँछ?",
-  "Laakhau hajara ma timi nai chhanxu" // final line bold
+  {time:2, text:"लाखौं हजारौं मध्ये तिम्रो मुस्कानले"},
+  {time:5, text:"किन हो मलाई पागल बनाउँछ?"},
+  {time:9, text:"लाखौं प्रयास गर्दा पनि"},
+  {time:12, text:"किन हो मलाई तिम्रै यादले सताउछ?"},
+  {time:15, text:"माया के हो भनेर"},
+  {time:18, text:"तिम्रै वरिपरि रहँदा यो मनले थाहा पाउँछ"},
+  {time:21, text:"आज भोलि, सुन्दा तिम्रो बोली"},
+  {time:24, text:"यो मुटु असाध्यै रमाउँछ"},
+  {time:27, text:"घामलाई हेरी बस्छु, बादलमा नी तिमी देख्छु"},
+  {time:30, text:"तिमी बिना कसरी बिताउने होला जिन्दगी?"},
+  {time:33, text:"ढाटेको केही छैन, तिम्रो लागि मेरो माया—"},
+  {time:36, text:"कति रैछ हेरिदेउन, यो सानो मुटुमा"},
+  {time:39, text:"चन्द्रमा र तारागण सामु, सारा संसार सामु"},
+  {time:42, text:"देखाइदिन्छु कति माया गर्छु तिमीलाई"},
+  {time:45, text:"भन्नेले भन्नेछन्, माया, मात्र तिमी पाए बालै छैन अरू कोहीको"},
+  {time:48, text:"सातौं जुनी भरि तिम्रै मुहार हेरी"},
+  {time:51, text:"तिम्रै हात समाई जीवन बिताउला"},
+  {time:54, text:"भनन मात्र तिमी, माया"},
+  {time:57, text:"सारा संसार तिम्रै हातमा थमाइदिउला"},
+  {time:60, text:"बादलहरु हेरी, तिम्रै गीत कोरी"},
+  {time:63, text:"आँखाहरू बन्द गरी मुस्कुराउँछु म"},
+  {time:66, text:"हिजो आज, सुन्दा त्यो आवाज"},
+  {time:69, text:"यो मुटु असाध्यै रमाउँछ"},
+  {time:72, text:"घामलाई हेरी बस्छु, बादलमा नी तिमी देख्छु"},
+  {time:75, text:"तिमी बिना कसरी बिताउने होला जिन्दगी?"},
+  {time:78, text:"ढाटेको केही छैन, तिम्रो लागि मेरो माया—"},
+  {time:81, text:"कति रैछ हेरिदेउन, यो सानो मुटुमा"},
+  {time:84, text:"चन्द्रमा र तारागण सामु, सारा संसार सामु"},
+  {time:87, text:"देखाइदिन्छु कति माया गर्छु तिमीलाई"},
+  {time:90, text:"भन्नेले भन्नेछन्, माया, मात्र तिमी पाए बालै छैन अरू कोहीको"},
+  {time:93, text:"लाखौं हजारौं मध्ये तिम्रै मुस्कानले"},
+  {time:96, text:"किन हो मलाई पागल बनाउँछ?"},
+  {time:99, text:"Laakhau hajara ma timi nai chhanxu"}
 ];
+lyrics.forEach(l => l.shown=false);
 
-// Show lyrics line by line
-let i = 0;
-function showNextLine() {
-  if (i < lyrics.length) {
-    const line = document.createElement('div');
-    if(i === lyrics.length - 1) line.style.fontWeight = 'bold'; // final line bold
-    line.textContent = lyrics[i];
-    lyricsContainer.appendChild(line);
-    lyricsContainer.scrollTop = lyricsContainer.scrollHeight;
-    i++;
-    setTimeout(showNextLine, 3000);
-  }
+// Show lyrics based on song time
+bgm.addEventListener('timeupdate', () => {
+  const t = bgm.currentTime;
+  lyrics.forEach((line, index) => {
+    if(!line.shown && t >= line.time){
+      const div = document.createElement('div');
+      div.textContent = line.text;
+      if(index === lyrics.length-1) div.style.fontWeight='bold';
+      lyricsContainer.appendChild(div);
+      lyricsContainer.scrollTop = lyricsContainer.scrollHeight;
+      line.shown = true;
+    }
+  });
+});
+
+// Live blooming rose animation
+function animateBloom() {
+  const t = bgm.currentTime;
+  petals.forEach((petal, i) => {
+    const scale = 0.9 + 0.15 * Math.sin(t * 2 + i);
+    petal.style.transform = `rotate(${[0,45,-45,90][i]}deg) scaleY(${scale})`;
+  });
+  const centerScale = 0.95 + 0.1 * Math.sin(t * 2);
+  center.style.transform = `scale(${centerScale})`;
+  requestAnimationFrame(animateBloom);
 }
-
-bgm.addEventListener('play', () => showNextLine());
+bgm.addEventListener('play', () => animateBloom());
 </script></body>
 </html>
